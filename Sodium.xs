@@ -360,8 +360,7 @@ real_crypto_box_open(c, clen, n, pk, sk)
         RETVAL
         
 SV *
-real_crypto_box_seal_open(m,c,clen,pk,sk)
-            unsigned char *m
+real_crypto_box_seal_open(c,clen,pk,sk)
             unsigned char *c 
             unsigned long clen
             unsigned char *pk
