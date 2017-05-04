@@ -39,6 +39,7 @@ our @EXPORT = qw(
     crypto_pwhash_argon_MEMLIMIT_INTERACTIVE
     crypto_pwhash_argon_ALG_DEFAULT
     real_argon_crypto_pwhash
+    crypto_pwhash_argon
 
     crypto_sign
     crypto_sign_open
