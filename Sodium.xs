@@ -106,6 +106,14 @@ crypto_box_MACBYTES()
 
     OUTPUT:
         RETVAL
+        
+ SV *
+crypto_box_SEALBYTES()
+    CODE:
+        RETVAL = newSVuv((unsigned int) crypto_box_SEALBYTES);
+
+    OUTPUT:
+        RETVAL
 
 
 SV *
@@ -350,6 +358,29 @@ real_crypto_box_open(c, clen, n, pk, sk)
 
     OUTPUT:
         RETVAL
+        
+SV *
+real_crypto_box_seal_open(m,c,clen,pk,sk)
+            unsigned char *m
+            unsigned char *c 
+            unsigned long clen
+            unsigned char *pk
+            unsigned char *sk
+     CODE:
+          unsigned char *m = sodium_malloc(clen - crypto_box_SEALBYTES);
+   
+          int status = crypto_box_seal_open((unsigned char*)m, (const unsigned char*)c,
+              (unsigned long long) clen,(const unsigned char*)pk, (const unsigned char*)sk);
+
+         if (status == 0) {
+             RETVAL = newSVpvn( m, clen - crypto_box_SEALBYTES );
+         } else {
+              RETVAL = &PL_sv_undef;
+         }
+         sodium_free(m);
+    OUTPUT:
+        RETVAL
+         
 
 SV *
 real_crypto_box(m, mlen, n, pk, sk)
@@ -374,6 +405,28 @@ real_crypto_box(m, mlen, n, pk, sk)
         sodium_free(c);
 
     OUTPUT:
+        RETVAL
+        
+SV *
+real_crypto_box_seal(m, mlen, pk)
+     unsigned char *m
+     unsigned long mlen
+     unsigned char *pk
+     
+     CODE:
+        unsigned char *c = sodium_malloc(mlen + crypto_box_SEALBYTES);
+
+        int status = crypto_box_seal((unsigned char*)c, (const unsigned char*)m, 
+              (unsigned long long) mlen,(const unsigned char*)pk);
+
+        if (status == 0) {
+            RETVAL = newSVpvn( c, mlen + crypto_box_SEALBYTES );
+        } else {
+            RETVAL = &PL_sv_undef;
+        }
+        sodium_free(c);
+     
+     OUTPUT:
         RETVAL
 
 
