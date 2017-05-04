@@ -26,8 +26,10 @@ our @EXPORT = qw(
     real_crypto_sign
     real_crypto_sign_open
     real_crypto_box
+    real_crypto_box_seal
     real_crypto_hash
     real_crypto_box_open
+    real_crypto_box_seal_open
     real_crypto_secretbox
     real_crypto_secretbox_open
     real_crypto_stream
@@ -38,6 +40,8 @@ our @EXPORT = qw(
     crypto_sign_verify_detached
     crypto_box
     crypto_box_open
+    crypto_box_seal
+    crypto_box_seal_open
     crypto_secretbox
     crypto_secretbox_open
     crypto_hash
@@ -320,6 +324,26 @@ sub crypto_box_open {
     }
 
     return real_crypto_box_open($c, length($c), $n, $pk, $sk);
+}
+
+sub crypto_box_seal_open {
+  my($c,$pk,$sk) =@_;
+      unless (length($pk) == crypto_box_PUBLICKEYBYTES) {
+        die "[fatal]: public key must be exactly " . crypto_box_PUBLICKEYBYTES . " bytes long.\n";
+    }
+
+    unless (length($sk) == crypto_box_SECRETKEYBYTES) {
+        die "[fatal]: secret key must be exactly " . crypto_box_SECRETKEYBYTES . " bytes long.\n";
+    }
+    return real_crypto_box_seal_open($c,length($c),$pk,$sk)
+}
+
+sub crypto_box_seal {
+  my($m,$pk)=@_;
+        unless (length($pk) == crypto_box_PUBLICKEYBYTES) {
+        die "[fatal]: public key must be exactly " . crypto_box_PUBLICKEYBYTES . " bytes long.\n";
+    }
+    return real_crypto_box_seal($m,length($m),$pk);
 }
 
 sub crypto_box {
