@@ -107,7 +107,7 @@ crypto_box_MACBYTES()
     OUTPUT:
         RETVAL
         
- SV *
+SV *
 crypto_box_SEALBYTES()
     CODE:
         RETVAL = newSVuv((unsigned int) crypto_box_SEALBYTES);
