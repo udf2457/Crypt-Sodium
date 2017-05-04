@@ -33,6 +33,12 @@ our @EXPORT = qw(
     real_crypto_secretbox
     real_crypto_secretbox_open
     real_crypto_stream
+    
+    crypto_pwhash_argon_SALTBYTES
+    crypto_pwhash_argon_OPSLIMIT_INTERACTIVE
+    crypto_pwhash_argon_MEMLIMIT_INTERACTIVE
+    crypto_pwhash_argon_ALG_DEFAULT
+    real_argon_crypto_pwhash
 
     crypto_sign
     crypto_sign_open
@@ -408,6 +414,23 @@ sub crypto_pwhash_scrypt {
     $mem = crypto_pwhash_MEMLIMIT unless $mem;
 
     return real_crypto_pwhash_scrypt($klen, $pass, $salt, $ops, $mem);
+}
+
+sub crypto_pwhash_argon {
+    my ($pass,$salt,$klen,$ops,$mem,$alg) = @_;
+        if (length($pass) < 1) {
+        die "[fatal]: supplying a zero length passphrase doesn't make any sense.\n";
+    }
+
+    if (length($salt) != crypto_pwhash_argon_SALTBYTES) {
+        die "[fatal]: salt must be exactly " . crypto_pwhash_argon_SALTBYTES . " bytes long.\n";
+    }
+    $klen = crypto_box_SEEDBYTES unless $klen;
+    $ops = crypto_pwhash_argon_OPSLIMIT_INTERACTIVE unless $ops;
+    $mem = crypto_pwhash_argon_MEMLIMIT_INTERACTIVE unless $mem;
+    $alg = crypto_pwhash_argon_ALG_DEFAULT unless $alg;
+
+    return real_argon_crypto_pwhash($klen, $pass, $salt, $ops, $mem,$alg);
 }
 
 sub crypto_pwhash_scrypt_str {
