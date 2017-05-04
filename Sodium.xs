@@ -765,30 +765,35 @@ real_crypto_pwhash_scrypt_str_verify(hp, p)
 
     OUTPUT:
         RETVAL
+        
 SV *
 crypto_pwhash_argon_SALTBYTES()
     CODE:
         RETVAL = newSVuv((unsigned int) crypto_pwhash_SALTBYTES);
     OUTPUT:
         RETVAL
+        
 SV *
 crypto_pwhash_argon_OPSLIMIT_INTERACTIVE()
     CODE:
         RETVAL = newSVuv((unsigned long) crypto_pwhash_OPSLIMIT_INTERACTIVE);
     OUTPUT:
         RETVAL
+        
 SV *
 crypto_pwhash_argon_MEMLIMIT_INTERACTIVE()
     CODE:
         RETVAL = newSVuv((unsigned long) crypto_pwhash_MEMLIMIT_INTERACTIVE);
     OUTPUT:
         RETVAL
+        
 SV *
 crypto_pwhash_argon_ALG_DEFAULT()
     CODE:
         RETVAL = newSVuv((unsigned int) crypto_pwhash_ALG_DEFAULT);
     OUTPUT:
         RETVAL
+        
 SV *
 real_argon_crypto_pwhash(klen,passwd,salt,opslimit,memlimit,alg)
             unsigned long klen
